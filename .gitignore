@@ -1,0 +1,19 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+
+/build
+/paper
+*~
+*swp
+*swo
+*swn
+*swm
+*cpp.swn
+*cpp.swp
+*cpp.swo
+*spp.swp
+*lyx#
+.idea
+*.o
+*.so
+*.pdf
+*.zip
