@@ -477,7 +477,7 @@ public:
       int count = 0;
       for (GenericListCstIter it = generic_list_.begin(); it != generic_list_.end(); ++it) {
         
-        retractResult_list.push_back(traits<T>::Retract((boost::dynamic_pointer_cast<GenericValue<T> >(*it))->value(), delta.segment(count, count + this_dim - 1)));
+        retractResult_list.push_back(traits<T>::Retract((boost::dynamic_pointer_cast<GenericValue<T> >(*it))->value(), delta.segment(count, this_dim)));
         
         count += this_dim;
       }
@@ -502,7 +502,7 @@ public:
       int count = 0;
       for (GenericListCstIter it = generic_list_.begin(); it != generic_list_.end(); ++it) {
         
-        retractResult_list.push_back(traits<T>::Retract((boost::dynamic_pointer_cast<GenericValue<T> >(*it))->value(), delta.segment(count, count + this_dim - 1)));
+        retractResult_list.push_back(traits<T>::Retract((boost::dynamic_pointer_cast<GenericValue<T> >(*it))->value(), delta.segment(count, this_dim)));
         
         count += this_dim;
       }
@@ -533,7 +533,7 @@ public:
       int count = 0;
       GenericListIter it2 = mh_genericValue2.generic_list_.begin();
       for (GenericListIter it = generic_list_.begin(); it != generic_list_.end(); ++it, ++it2) {
-        out_vector.segment(count, count + dim - 1) = it->localCoordinates_((*it2));
+        out_vector.segment(count, dim) = it->localCoordinates_((*it2));
         count += dim;
       }
 
@@ -555,8 +555,8 @@ public:
       int count = 0;
       for (GenericListIter it = generic_list_.begin(); it != generic_list_.end(); ++it) {
         
-        retractResult_list.push_back(traits<T>::Retract((*it)->value(), delta.segment(count, count + dim - 1)));
-        //retractResult_list.push_back(traits<T>::Retract(it->value(), delta.segment(count, count + dim - 1)));
+        retractResult_list.push_back(traits<T>::Retract((*it)->value(), delta.segment(count, dim)));
+        //retractResult_list.push_back(traits<T>::Retract(it->value(), delta.segment(count, dim)));
         
         count += dim;
       }
@@ -687,27 +687,36 @@ public:
             return true;
           }
         }
-        std::cout << "Error: MHGV::removeAccumulatedPruned() should match exactly one original_size_" << std::endl;
+        std::cout << "ERROR: MHGV::removeAccumulatedPruned() should match exactly one original_size_ (generic_list_.size(): " << generic_list_.size() << ")" << std::endl;
+
+        std::cout << "All original_size_: ";
+        std::cout << "hypo_list.size(): " << hypo_list.size() << std::endl;
+
+        for (size_t r = 0; r < record_arr.size(); ++r) {
+            std::cout << record_arr[r]->original_size_ << " ";
+        }
+        std::cout << std::endl;
+
         return false;
       }
     } // END removeAccumulatedPruned()
     
     void setAgreeToDiff(const Key& key, const int& layer_diff) {
-      
       GenericListIter git = generic_list_.begin();  
       HypoList& hypo_list = getHypoList();
 
-      for (HypoListIter it = hypo_list.begin(); it != hypo_list.end(); ++it, ++git) {
+      for (HypoListIter it = hypo_list.begin(); it != hypo_list.end(); ++it) {
         
         size_t num = (*it)->findDescendantNum(layer_diff); 
         
         T& copy_value = (boost::dynamic_pointer_cast<GenericValue<T> >(*git))->value();
-        for (size_t i = 0; i < (num-1); ++i) {
+        for (size_t i = 0; i < (num - 1); ++i) {
 
           sharedImplyGeneric gv_ptr( new GenericValue<T>(copy_value) );
           generic_list_.insert(git, gv_ptr);
 
         }
+        ++git;
 
         (*it)->removeValueLink(key);
       }
@@ -721,10 +730,10 @@ public:
       GenericListIter new_git = generic_list_.begin();
         
       HypoList& new_list = resulting_layer_->getNodeList(); //[D]
-      for (HypoListIter it = new_list.begin(); it != new_list.end(); ++it, ++new_git) {
+      for (HypoListIter it = new_list.begin(); it != new_list.end(); ++it) {
         (*it)->addKeyValuePair(key, (*new_git));
+        ++new_git;
       }
-    
     } // END setAgreeToDiff()
     
     void setAgreeWith(const Key& key, HypoLayer* target_layer) {

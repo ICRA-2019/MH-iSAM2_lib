@@ -201,14 +201,19 @@ namespace gtsam {
     const HypoList& hypo_list = val.getHypoList();
     
     const GenericList& generic_list = val.getGenericList(); 
+  
+    if (generic_list.size() != hypo_list.size()) {
+        std::cout << "ERROR: generic_list.size() != hypo_list.size()... Make sure to call mhCalculateBestEstimate() after pruning if the MHGVs are used later!!" << std::endl;
+    }
     
     GenericListCstIter git = generic_list.begin();
     
-    for (HypoListCstIter hit = hypo_list.begin(); hit != hypo_list.end(); ++hit, ++git) {
+    for (HypoListCstIter hit = hypo_list.begin(); hit != hypo_list.end(); ++hit) {
      
       // Setup Key-Value* map in each HypoNode
       (*hit)->addKeyValuePair(j, (*git));
-    
+      
+      ++git; 
     }
   }
   //=========================== END MH ============================

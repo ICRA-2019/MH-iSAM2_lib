@@ -110,6 +110,10 @@ namespace gtsam {
         accumulated_dim_ = parent->accumulated_dim_;
       }
 
+      const int getModeId() {
+        return mode_id_;
+      }
+
       HypoNode* getParent() { 
         if (ancestor_arr_.size() == 0) {
           return prev_level_ptr_;
@@ -305,12 +309,35 @@ namespace gtsam {
         source_factor_ = factor;
       }
 
+      const int& getLayerIdx() {
+        return layer_idx_;
+      }
+
       size_t getNodeSize() {
         return node_list_.size();
       }
 
       HypoList& getNodeList() {
         return node_list_;
+      }
+
+      bool isModeIdExist(const int& mode_id) {
+        for (HypoListIter it = node_list_.begin(); it != node_list_.end(); ++it) {
+          if ( (*it)->getModeId() == mode_id ) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      bool isModeConverged() {
+        const int mode_id = (node_list_.front())->getModeId();
+        for (HypoListIter it = node_list_.begin(); it != node_list_.end(); ++it) {
+          if ( (*it)->getModeId() != mode_id ) {
+            return false;
+          }
+        }
+        return true;
       }
 
       HypoLayer& toPrevLayer();

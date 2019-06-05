@@ -758,6 +758,10 @@ public:
   HypoLayer* getLastHypoLayer() {
     return &(hypo_tree_->getLastLayer()); //layer_arr_.back()  
   }
+
+  const int& getLastHypoLayerIdx() {
+    return hypo_tree_->getLastLayer().getLayerIdx();
+  }
   
   std::list<HypoNode*>& getNodeListAt(const int& layer_idx) {
     return hypo_tree_->getLayer(layer_idx).getNodeList();
@@ -779,6 +783,14 @@ public:
   void assocLatestHypoLayerWith(sharedFactor factor) {
     // Input is always a descendant of MHNoiseModelFactor
     (boost::static_pointer_cast<MHNoiseModelFactor>(factor))->setCreatingHypoLayer(hypo_tree_->setLatestLayerSource(factor));
+  }
+
+  bool isModeIdExistInLayer(const int& mode_id, const int& layer_idx) {
+    return hypo_tree_->getLayer(layer_idx).isModeIdExist(mode_id);
+  }
+
+  bool isModeConvergedInLayer(const int& layer_idx) {
+    return hypo_tree_->getLayer(layer_idx).isModeConverged();
   }
 
   //MHGenericValue<Pose3> predictPose3Multi(const MHGenericValue<Pose3>& mh_generic, const std::vector<Pose3>& odom_arr);
