@@ -413,7 +413,7 @@ void HessianFactor::updateHessian(const FastVector<Key>& infoKeys,
 void MHHessianFactor::mhUpdateHessian(const FastVector<Key>& keys, HessList& hessian_list, const int& max_layer_idx) const {
   
   // max_layer_idx decides the recursive iter...
-  const int this_layer_idx = resulting_layer_->layer_idx_;
+  const int this_layer_idx = resulting_layer_->getLayerIdx();
   const int layer_diff = max_layer_idx - this_layer_idx;
   
   std::vector<int> descendant_num_arr(hypoSize());
@@ -703,7 +703,7 @@ MHHessianFactor::MHHessianFactor(const GaussianFactorGraph& factors, boost::opti
   boost::shared_ptr<GaussianFactor> max_fac_ptr;
   for(const auto& fac: factors) {
     if (fac) {
-      int tmp_layer_idx = fac->getHypoLayer()->layer_idx_;
+      const int tmp_layer_idx = fac->getHypoLayer()->getLayerIdx();
 
       if (tmp_layer_idx >= max_layer_idx) {
         max_layer_idx = tmp_layer_idx;

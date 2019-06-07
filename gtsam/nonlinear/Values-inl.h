@@ -322,7 +322,7 @@ namespace gtsam {
      ValueType operator()(Key j, const Value* const pointer, HypoNode* max_hypo_ptr) {
        try {
          // value returns a const ValueType&, and the return makes a copy !!!!!
-         const size_t& layer_idx = dynamic_cast<const MHGenericValue<ValueType>&>(*pointer).getHypoLayer()->layer_idx_;
+         const size_t& layer_idx = dynamic_cast<const MHGenericValue<ValueType>&>(*pointer).getHypoLayer()->getLayerIdx();
          const HypoNode* this_hypo = max_hypo_ptr->findAncestor(layer_idx);
          return boost::dynamic_pointer_cast<const GenericValue<ValueType> >( this_hypo->key_value_map_.find(j)->second )->value();
        

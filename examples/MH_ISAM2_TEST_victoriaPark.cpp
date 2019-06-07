@@ -21,10 +21,7 @@ using symbol_shorthand::X;
 using symbol_shorthand::L;
 
 // Testing params
-const size_t max_odom_count = 300; //3800 
-
-//const string input_file_name = "../data/mh_T2_victoriaPark_01.txt"; //Type #2 only
-const string input_file_name = "../data/mh_T1_T2_victoriaPark_08.txt"; //Type #1 + Type #2
+const size_t max_odom_count = 3800; //3800 
 
 noiseModel::Diagonal::shared_ptr prior_noise_model = noiseModel::Diagonal::Sigmas((Vector(3) << 0.0001, 0.0001, 0.0001).finished());
 
@@ -35,7 +32,8 @@ noiseModel::Diagonal::shared_ptr point_noise_model = noiseModel::Diagonal::Sigma
 
 int main(int argc, char* argv[]) {
 
-  ifstream in(input_file_name);
+  ifstream in("../data/mh_T2_victoriaPark_01.txt"); //Type #2 only  
+  //ifstream in("../data/mh_T1_T2_victoriaPark_08.txt"); //Type #1 + Type #2
 
   size_t odom_count = 0;
   size_t landmark_count = 0;
@@ -47,6 +45,7 @@ int main(int argc, char* argv[]) {
   
   mh_parameters.isPrintPruningDetails = true;
    
+  //parameters.optimizationParams = gtsam::ISAM2DoglegParams(0.1);  //_initialDelta = 1.0
   parameters.optimizationParams = gtsam::ISAM2GaussNewtonParams(0.0); //_wildfireThreshold = 0.001
   
   parameters.relinearizeThreshold = 0.01;
@@ -77,13 +76,16 @@ int main(int argc, char* argv[]) {
   mh_init_values.clear();
   mh_results = mh_isam2->mhCalculateBestEstimate();
   
+  //*
   size_t key_s = 0;
   size_t key_t = 0;
+  
   
   clock_t start_time = clock();
   string str;
   while (getline(in, str) && odom_count < max_odom_count) {
     
+    //cout << str << endl; 
     vector<string> parts;
     split(parts, str, is_any_of(" "));
 
@@ -120,14 +122,16 @@ int main(int argc, char* argv[]) {
       }
 
       odom_count++;
+      //cout << odom_count << endl;
 
     } else { //LANDMARK
-      
+      //*
       key_s = stoi(parts[1]);
       int k_num = stoi(parts[2]);
       
       if (k_num == 1) {
         key_t = stoi(parts[3]);
+        //int m_num = 1;
         double l_x = stod(parts[6]);
         double l_y = stod(parts[7]);
       
@@ -149,10 +153,11 @@ int main(int argc, char* argv[]) {
         key_list.push_back(L(key_t));
         mh_graph->add(MH_Pose2_Point2_Factor(key_list, measured_arr[0], point_noise_model));
       
+        //landmark_count++;
       } else {
-        
         size_t key_t1 = stoi(parts[3]);
         size_t key_t2 = stoi(parts[4]);
+        //int m_num = 1;
         double l_x = stod(parts[7]);
         double l_y = stod(parts[8]);
 
@@ -170,6 +175,7 @@ int main(int argc, char* argv[]) {
         mh_isam2->assocLatestHypoLayerWith(mh_graph->back());
       
       }
+      // */
     }
 
     mh_isam2->update(*mh_graph, mh_init_values);
@@ -200,21 +206,25 @@ int main(int argc, char* argv[]) {
       step_outfile.close();
     }
    
+    //* 
     if (odom_count%50 == 0 && key_s != key_t - 1) {
        std::cout << "odom_count: " << odom_count << std::endl;
+       
+       //MHISAM2::HypoList& curr_hypo_list = mh_isam2->getLastHypoLayer()->getNodeList();
+       //std::cout << "Last layer hypos:  " << curr_hypo_list.size() << std::endl;
+       
        std::cout << "acc_time:  " << time_list.back() << std::endl;
     }
+    // */
     
   }
   
   clock_t end_time = clock();
   clock_t total_time = end_time - start_time;
   cout << "total_time: " << total_time << endl;
-  cout << "# layers: " << mh_isam2->getLastHypoLayer()->layer_idx_ << endl;
+  cout << "# layers: " << mh_isam2->getLastHypoLayer()->getLayerIdx() << endl;
+  //* 
   
-  mh_isam2->printAllFinalHypo();
-  
-  /* 
   ofstream outfile;
   string file_name = "MH_ISAM2_TEST_victoriaPark";
   outfile.open(file_name + ".txt");
@@ -228,7 +238,7 @@ int main(int argc, char* argv[]) {
 
   outfile.close();
   cout << "output " << file_name << ".txt file." << endl;
-  
+  // */
   ofstream lm_outfile;
   string lm_file_name = "MH_ISAM2_TEST_victoriaPark_lm";
   lm_outfile.open(lm_file_name + ".txt");
@@ -242,8 +252,8 @@ int main(int argc, char* argv[]) {
 
   lm_outfile.close();
   cout << "output " << lm_file_name << ".txt file." << endl;
-  // */
-   
+  
+  //*
   // Output each hypo
   ofstream outfile_hypo;
   string hypo_file_name = "MH_ISAM2_TEST_victoriaPark_hypos";
@@ -263,7 +273,9 @@ int main(int argc, char* argv[]) {
   }
   outfile_hypo.close();
   cout << "output " << hypo_file_name << ".txt file." << endl;
+  // */
   
+  //*
   // Output each landmark hypo
   ofstream outfile_lm_hypo;
   string lm_hypo_file_name = "MH_ISAM2_TEST_victoriaPark_lm_hypos";
@@ -281,16 +293,18 @@ int main(int argc, char* argv[]) {
   }
   outfile_lm_hypo.close();
   cout << "output " << lm_hypo_file_name << ".txt file." << endl;
+  // */
   
-  // Output accumulated time ratio
+  //*
   ofstream outfile_time;
   string time_file_name = "MH_ISAM2_TEST_victoriaPark_time";
   outfile_time.open(time_file_name + ".txt");
   for (auto acc_time : time_list) {
-    outfile_time << acc_time << endl;
+    outfile_time << acc_time << endl; 
   }
   outfile_time.close();
   cout << "output " << time_file_name << ".txt file." << endl;
+  // */
   
   return 0;
 }

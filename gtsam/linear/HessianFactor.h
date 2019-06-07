@@ -822,7 +822,7 @@ struct traits<HessianFactor> : public Testable<HessianFactor> {};
       if (hessian_list_.size() == hypo_list.size()) {
         return false; //already up-to-date, no need any changes
       } else {
-        RecordArr& record_arr = resulting_layer_->record_arr_;
+        RecordArr& record_arr = resulting_layer_->getRecordArr();
         
         for (size_t r = 0; r < record_arr.size(); ++r) {
         //for (size_t r = (record_arr.size() - 1); r >= 0; --r) {
@@ -857,7 +857,7 @@ struct traits<HessianFactor> : public Testable<HessianFactor> {};
       //TODO: might be necessary?
       removeAccumulatedPruned();
 
-      const size_t& common_dim = getHypoLayer()->belong_tree_ptr_->common_dim_;
+      const size_t& common_dim = getHypoLayer()->getBelongTreePtr()->common_dim_;
       const HypoList& hypo_list = getHypoList(); 
 
       std::cout << "printAllHypo(): " << hypo_list.size() << std::endl;
@@ -890,7 +890,7 @@ struct traits<HessianFactor> : public Testable<HessianFactor> {};
       // Current format of prune_list: <(err2/chi2), hypo, dim>
       //TODO: Replace err2/chi2 with chi2 confidence...
       // Desired format of prune_list: <p_value, hypo, dim>
-      
+
       if ( !(is_strict_th) && (hypoSize() <= max_hypo_num) ) {
         
         return false; //no need to do any pruning...
@@ -900,10 +900,15 @@ struct traits<HessianFactor> : public Testable<HessianFactor> {};
       //[MH-E]: Move all err > chi2 from candidate_list to prune_list
       PruneList candidate_list;
       
-      const size_t common_dim = getHypoLayer()->belong_tree_ptr_->common_dim_;
+      const size_t common_dim = getHypoLayer()->getBelongTreePtr()->common_dim_;
       const HypoList& hypo_list = getHypoList();
       HypoListCstIter it = hypo_list.begin();
-      for (HessListCstIter hit = hessian_list_.begin(); hit != hessian_list_.end(); ++hit, ++it) {
+      
+      if (getHypoLayer()->getLayerIdx() != getHypoLayer()->getBelongTreePtr()->getLastLayer().getLayerIdx()) {
+        std::cout << "ERROR: the HypoLayer of the HessianFactor for pruning (" << getHypoLayer()->getLayerIdx() << ") != the latest HypoLayer (" << getHypoLayer()->getBelongTreePtr()->getLastLayer().getLayerIdx() << ") !!" << std::endl; 
+      }
+
+      for (HessListCstIter hit = hessian_list_.begin(); hit != hessian_list_.end(); ++hit) {
         const size_t sum_dim = (*it)->accumulated_dim_ + common_dim;
         const double chi2_th = HypoLayer::getChi2(sum_dim);
         const double err2 = mhGet_single_err2(hit);
@@ -915,6 +920,8 @@ struct traits<HessianFactor> : public Testable<HessianFactor> {};
         } else { //should go to next round
           candidate_list.push_back(std::make_tuple( err2/chi2_th, (*it), sum_dim ));
         }
+
+        ++it;
       }
       
       // DEBUG only

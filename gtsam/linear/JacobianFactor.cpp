@@ -805,7 +805,7 @@ GaussianConditional::shared_ptr JacobianFactor::splitConditional(size_t nrFronta
 //[MH-A]:
 void MHJacobianFactor::mhUpdateHessian(const FastVector<Key>& keys, HessList& hessian_list, const int& max_layer_idx) const {
   // max_layer_idx decides the recursive iter...
-  const int this_layer_idx = resulting_layer_->layer_idx_;
+  const int this_layer_idx = resulting_layer_->getLayerIdx();
   const int layer_diff = max_layer_idx - this_layer_idx;
 
   //std::vector<int> descendant_num_arr(hypo_list_.size()); //[D]

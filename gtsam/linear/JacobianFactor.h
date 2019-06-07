@@ -858,7 +858,7 @@ class GTSAM_EXPORT MHJacobianFactor : public JacobianFactor {
       } else if (jacobian_list_.size() == 0) {
         return false; //NOT a useful factor but somehow added into the optimization (should DEBUG original iSAM2...)
       } else {
-        RecordArr& record_arr = resulting_layer_->record_arr_;
+        RecordArr& record_arr = resulting_layer_->getRecordArr();
         
         for (size_t r = 0; r < record_arr.size(); ++r) {
         

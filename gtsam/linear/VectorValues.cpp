@@ -187,7 +187,7 @@ namespace gtsam {
   void VectorValues::mhUpdateVectorArr(const Key& j, const size_t& dim, const size_t& pos, HypoLayer* layer_ptr, std::vector<Vector>& xS_arr, const int& max_layer_idx) const {
     
     HypoLayer::HypoList& hypo_list = layer_ptr->getNodeList();
-    const int this_layer_idx = layer_ptr->layer_idx_;
+    const int this_layer_idx = layer_ptr->getLayerIdx();
     const int layer_diff = max_layer_idx - this_layer_idx;
 
     std::vector<int> descendant_num_arr(hypo_list.size());

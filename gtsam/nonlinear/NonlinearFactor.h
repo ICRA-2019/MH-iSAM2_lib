@@ -991,7 +991,7 @@ public:
         size_t mode_id = 0;
         if (creating_layer_ != NULL) {
 
-          int fac_layer = creating_layer_->layer_idx_;
+          int fac_layer = creating_layer_->getLayerIdx();
 
           mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;
         }
@@ -1114,7 +1114,7 @@ public:
 
     if(this->active(x)) {
 
-      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->belong_tree_ptr_;
+      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->getBelongTreePtr();
 
       int hypo_count = 0;
       if (max_key_idx_ == 0) { //keys_[0] has the largest #hypo
@@ -1123,14 +1123,14 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>((*hit)->key_value_map_.find(keys_[0])->second)->value();
           
-          int val_layer = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          int val_layer = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           // Can be either the same or diffrerent HypoLayer
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer))->key_value_map_.find(keys_[1])->second)->value();
           
@@ -1159,12 +1159,12 @@ public:
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
 
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
-          int val_layer = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           // Can be the same or diffrerent HypoLayer
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer))->key_value_map_.find(keys_[0])->second)->value();
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>((*hit)->key_value_map_.find(keys_[1])->second)->value();
@@ -1299,7 +1299,7 @@ public:
 
     if(this->active(x)) {
 
-      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->belong_tree_ptr_;
+      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->getBelongTreePtr();
 
       int hypo_count = 0;
       if (max_key_idx_ == 0) { //keys_[0] has the largest #hypo
@@ -1308,24 +1308,24 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>((*hit)->key_value_map_.find(keys_[0])->second)->value();
           
-          //int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          //int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           //X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
-          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
-          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->layer_idx_;
+          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->getLayerIdx();
           X3& x3 = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[2])->second)->value();
-          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->layer_idx_;
+          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->getLayerIdx();
           X4& x4 = boost::dynamic_pointer_cast<GenericX4>(((*hit)->findAncestor(val_layer3))->key_value_map_.find(keys_[3])->second)->value();
-          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->layer_idx_;
+          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->getLayerIdx();
           X5& x5 = boost::dynamic_pointer_cast<GenericX5>(((*hit)->findAncestor(val_layer4))->key_value_map_.find(keys_[4])->second)->value();
-          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->layer_idx_;
+          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->getLayerIdx();
           X6& x6 = boost::dynamic_pointer_cast<GenericX6>(((*hit)->findAncestor(val_layer5))->key_value_map_.find(keys_[5])->second)->value();
           
           Vector error;
@@ -1350,24 +1350,24 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>((*hit)->key_value_map_.find(keys_[1])->second)->value();
           
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
-          //int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          //int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           //X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
-          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->layer_idx_;
+          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->getLayerIdx();
           X3& x3 = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[2])->second)->value();
-          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->layer_idx_;
+          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->getLayerIdx();
           X4& x4 = boost::dynamic_pointer_cast<GenericX4>(((*hit)->findAncestor(val_layer3))->key_value_map_.find(keys_[3])->second)->value();
-          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->layer_idx_;
+          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->getLayerIdx();
           X5& x5 = boost::dynamic_pointer_cast<GenericX5>(((*hit)->findAncestor(val_layer4))->key_value_map_.find(keys_[4])->second)->value();
-          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->layer_idx_;
+          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->getLayerIdx();
           X6& x6 = boost::dynamic_pointer_cast<GenericX6>(((*hit)->findAncestor(val_layer5))->key_value_map_.find(keys_[5])->second)->value();
           
           Vector error;
@@ -1392,24 +1392,24 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
           X3& x3 = boost::dynamic_pointer_cast<GenericX3>((*hit)->key_value_map_.find(keys_[2])->second)->value();
           
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
-          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
-          //int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->layer_idx_;
+          //int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->getLayerIdx();
           //X3& x3 = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[2])->second)->value();
-          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->layer_idx_;
+          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->getLayerIdx();
           X4& x4 = boost::dynamic_pointer_cast<GenericX4>(((*hit)->findAncestor(val_layer3))->key_value_map_.find(keys_[3])->second)->value();
-          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->layer_idx_;
+          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->getLayerIdx();
           X5& x5 = boost::dynamic_pointer_cast<GenericX5>(((*hit)->findAncestor(val_layer4))->key_value_map_.find(keys_[4])->second)->value();
-          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->layer_idx_;
+          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->getLayerIdx();
           X6& x6 = boost::dynamic_pointer_cast<GenericX6>(((*hit)->findAncestor(val_layer5))->key_value_map_.find(keys_[5])->second)->value();
           
           Vector error;
@@ -1434,24 +1434,24 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
           X4& x4 = boost::dynamic_pointer_cast<GenericX4>((*hit)->key_value_map_.find(keys_[3])->second)->value();
           
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
-          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
-          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->layer_idx_;
+          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->getLayerIdx();
           X3& x3 = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[2])->second)->value();
-          //int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->layer_idx_;
+          //int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->getLayerIdx();
           //X4& x4 = boost::dynamic_pointer_cast<GenericX4>(((*hit)->findAncestor(val_layer3))->key_value_map_.find(keys_[3])->second)->value();
-          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->layer_idx_;
+          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->getLayerIdx();
           X5& x5 = boost::dynamic_pointer_cast<GenericX5>(((*hit)->findAncestor(val_layer4))->key_value_map_.find(keys_[4])->second)->value();
-          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->layer_idx_;
+          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->getLayerIdx();
           X6& x6 = boost::dynamic_pointer_cast<GenericX6>(((*hit)->findAncestor(val_layer5))->key_value_map_.find(keys_[5])->second)->value();
           
           Vector error;
@@ -1476,24 +1476,24 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
           X5& x5 = boost::dynamic_pointer_cast<GenericX5>((*hit)->key_value_map_.find(keys_[4])->second)->value();
           
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
-          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
-          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->layer_idx_;
+          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->getLayerIdx();
           X3& x3 = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[2])->second)->value();
-          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->layer_idx_;
+          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->getLayerIdx();
           X4& x4 = boost::dynamic_pointer_cast<GenericX4>(((*hit)->findAncestor(val_layer3))->key_value_map_.find(keys_[3])->second)->value();
-          //int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->layer_idx_;
+          //int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->getLayerIdx();
           //X5& x5 = boost::dynamic_pointer_cast<GenericX5>(((*hit)->findAncestor(val_layer4))->key_value_map_.find(keys_[4])->second)->value();
-          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->layer_idx_;
+          int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->getLayerIdx();
           X6& x6 = boost::dynamic_pointer_cast<GenericX6>(((*hit)->findAncestor(val_layer5))->key_value_map_.find(keys_[5])->second)->value();
           
           Vector error;
@@ -1519,24 +1519,24 @@ public:
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
 
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
           X6& x6 = boost::dynamic_pointer_cast<GenericX6>((*hit)->key_value_map_.find(keys_[5])->second)->value();
           
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
-          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
-          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->layer_idx_;
+          int val_layer2 = this_tree->key_layer_map_.find(keys_[2])->second->getLayerIdx();
           X3& x3 = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[2])->second)->value();
-          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->layer_idx_;
+          int val_layer3 = this_tree->key_layer_map_.find(keys_[3])->second->getLayerIdx();
           X4& x4 = boost::dynamic_pointer_cast<GenericX4>(((*hit)->findAncestor(val_layer3))->key_value_map_.find(keys_[3])->second)->value();
-          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->layer_idx_;
+          int val_layer4 = this_tree->key_layer_map_.find(keys_[4])->second->getLayerIdx();
           X5& x5 = boost::dynamic_pointer_cast<GenericX5>(((*hit)->findAncestor(val_layer4))->key_value_map_.find(keys_[4])->second)->value();
-          //int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->layer_idx_;
+          //int val_layer5 = this_tree->key_layer_map_.find(keys_[5])->second->getLayerIdx();
           //X6& x6 = boost::dynamic_pointer_cast<GenericX6>(((*hit)->findAncestor(val_layer5))->key_value_map_.find(keys_[5])->second)->value();
           
           Vector error;
@@ -1657,7 +1657,7 @@ public:
 
     if(this->active(x)) {
 
-      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->belong_tree_ptr_;
+      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->getBelongTreePtr();
 
       int hypo_count = 0;
       if (max_key_idx_ == 0) { //keys_[0] has the largest #hypo
@@ -1666,7 +1666,7 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
@@ -1676,7 +1676,7 @@ public:
          
           for (size_t i = 0; i < (size() - 1); ++i) {
             
-            int val_layer = this_tree->key_layer_map_.find(keys_[i + 1])->second->layer_idx_;
+            int val_layer = this_tree->key_layer_map_.find(keys_[i + 1])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x2_arr[i] = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer))->key_value_map_.find(keys_[i + 1])->second)->value();
           }
@@ -1707,19 +1707,19 @@ public:
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
 
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
          
-          int val_layer_1 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer_1 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           // Can be the same or diffrerent HypoLayer
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer_1))->key_value_map_.find(keys_[0])->second)->value();
           std::vector<X2> x2_arr(size() - 1);
           
           for (size_t i = 0; i < (size() - 1); ++i) {
             
-            int val_layer = this_tree->key_layer_map_.find(keys_[i + 1])->second->layer_idx_;
+            int val_layer = this_tree->key_layer_map_.find(keys_[i + 1])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x2_arr[i] = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer))->key_value_map_.find(keys_[i + 1])->second)->value();
           }
@@ -1845,7 +1845,7 @@ public:
 
     if(this->active(x)) {
 
-      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->belong_tree_ptr_;
+      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->getBelongTreePtr();
 
       int hypo_count = 0;
       if (max_key_idx_ == 0) { //keys_[0] has the largest #hypo
@@ -1854,21 +1854,21 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>((*hit)->key_value_map_.find(keys_[0])->second)->value();
           
-          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
           
           std::vector<X3> x3_arr(size() - 2);
          
           for (size_t i = 0; i < (size() - 2); ++i) {
             
-            int val_layer2 = this_tree->key_layer_map_.find(keys_[i + 2])->second->layer_idx_;
+            int val_layer2 = this_tree->key_layer_map_.find(keys_[i + 2])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x3_arr[i] = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[i + 2])->second)->value();
           }
@@ -1895,12 +1895,12 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
           
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>((*hit)->key_value_map_.find(keys_[1])->second)->value();
@@ -1909,7 +1909,7 @@ public:
          
           for (size_t i = 0; i < (size() - 2); ++i) {
             
-            int val_layer2 = this_tree->key_layer_map_.find(keys_[i + 2])->second->layer_idx_;
+            int val_layer2 = this_tree->key_layer_map_.find(keys_[i + 2])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x3_arr[i] = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[i + 2])->second)->value();
           }
@@ -1937,22 +1937,22 @@ public:
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
 
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
          
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
           
-          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
           
           std::vector<X3> x3_arr(size() - 2);
           
           for (size_t i = 0; i < (size() - 2); ++i) {
             
-            int val_layer2 = this_tree->key_layer_map_.find(keys_[i + 2])->second->layer_idx_;
+            int val_layer2 = this_tree->key_layer_map_.find(keys_[i + 2])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x3_arr[i] = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[i + 2])->second)->value();
           }
@@ -2077,7 +2077,7 @@ public:
 
     if(this->active(x)) {
 
-      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->belong_tree_ptr_;
+      HypoTree* this_tree = hypo_list.front()->belong_layer_ptr_->getBelongTreePtr();
 
       int hypo_count = 0;
       if (max_key_idx_ == 0) { //keys_[0] has the largest #hypo
@@ -2086,7 +2086,7 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
@@ -2098,7 +2098,7 @@ public:
           std::vector<X2> x2_arr(K);
           for (size_t i = 0; i < K; ++i) {
             
-            int val_layer1 = this_tree->key_layer_map_.find(keys_[i*2 + 1])->second->layer_idx_;
+            int val_layer1 = this_tree->key_layer_map_.find(keys_[i*2 + 1])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x2_arr[i] = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[i*2 + 1])->second)->value();
           }
@@ -2106,7 +2106,7 @@ public:
           std::vector<X3> x3_arr(K);
           for (size_t i = 0; i < K; ++i) {
             
-            int val_layer2 = this_tree->key_layer_map_.find(keys_[i*2 + 2])->second->layer_idx_;
+            int val_layer2 = this_tree->key_layer_map_.find(keys_[i*2 + 2])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x3_arr[i] = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[i*2 + 2])->second)->value();
           }
@@ -2133,12 +2133,12 @@ public:
           
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
           
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
           
           const size_t K = (size() - 1)/2;
@@ -2147,7 +2147,7 @@ public:
           std::vector<X2> x2_arr(K);
           for (size_t i = 0; i < K; ++i) {
             
-            int val_layer1 = this_tree->key_layer_map_.find(keys_[i*2 + 1])->second->layer_idx_;
+            int val_layer1 = this_tree->key_layer_map_.find(keys_[i*2 + 1])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x2_arr[i] = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[i*2 + 1])->second)->value();
           }
@@ -2155,7 +2155,7 @@ public:
           std::vector<X3> x3_arr(K);
           for (size_t i = 0; i < K; ++i) {
             
-            int val_layer2 = this_tree->key_layer_map_.find(keys_[i*2 + 2])->second->layer_idx_;
+            int val_layer2 = this_tree->key_layer_map_.find(keys_[i*2 + 2])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x3_arr[i] = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[i*2 + 2])->second)->value();
           }
@@ -2183,23 +2183,23 @@ public:
           size_t mode_id = 0;
           if (creating_layer_ != NULL) {
 
-            int fac_layer = creating_layer_->layer_idx_;
+            int fac_layer = creating_layer_->getLayerIdx();
          
             mode_id = ((*hit)->findAncestor(fac_layer))->mode_id_;;
           }
          
-          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->layer_idx_;
+          int val_layer0 = this_tree->key_layer_map_.find(keys_[0])->second->getLayerIdx();
           X1& x1 = boost::dynamic_pointer_cast<GenericX1>(((*hit)->findAncestor(val_layer0))->key_value_map_.find(keys_[0])->second)->value();
           
           const size_t K = (size() - 1)/2;
           
-          //int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->layer_idx_;
+          //int val_layer1 = this_tree->key_layer_map_.find(keys_[1])->second->getLayerIdx();
           //X2& x2 = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[1])->second)->value();
           
           std::vector<X2> x2_arr(K);
           for (size_t i = 0; i < K; ++i) {
             
-            int val_layer1 = this_tree->key_layer_map_.find(keys_[i*2 + 1])->second->layer_idx_;
+            int val_layer1 = this_tree->key_layer_map_.find(keys_[i*2 + 1])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x2_arr[i] = boost::dynamic_pointer_cast<GenericX2>(((*hit)->findAncestor(val_layer1))->key_value_map_.find(keys_[i*2 + 1])->second)->value();
           }
@@ -2207,7 +2207,7 @@ public:
           std::vector<X3> x3_arr(K);
           for (size_t i = 0; i < K; ++i) {
             
-            int val_layer2 = this_tree->key_layer_map_.find(keys_[i*2 + 2])->second->layer_idx_;
+            int val_layer2 = this_tree->key_layer_map_.find(keys_[i*2 + 2])->second->getLayerIdx();
             // Can be either the same or diffrerent HypoLayer
             x3_arr[i] = boost::dynamic_pointer_cast<GenericX3>(((*hit)->findAncestor(val_layer2))->key_value_map_.find(keys_[i*2 + 2])->second)->value();
           }

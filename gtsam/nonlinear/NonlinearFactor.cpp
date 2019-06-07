@@ -155,13 +155,13 @@ boost::shared_ptr<GaussianFactor> MHNoiseModelFactor::mhLinearize(const Values& 
   // Call evaluate error to get Jacobians and RHS vector b
   //[MH-A]: get max_hypo_layer from all connected input Values x;
   int max_layer_idx = 0; //mhsiao: the max_hypo_num defines the output number of hypos in MHJacobianfactor
-  HypoLayer* resulting_layer;
+  HypoLayer* resulting_layer; //WARNING: initialization needed????
     
   int max_key_idx = -1; 
   for (size_t i = 0; i < size(); ++i) {
 
     HypoLayer* tmp_layer_ptr = x.at(keys()[i]).getHypoLayer();
-    int tmp_layer_idx = tmp_layer_ptr->layer_idx_; //mhsiao: define a virtual hypoNum() inside Value and define the implementation in both GenericValue and MHGenericValue so that we do not need MHValue here...
+    int tmp_layer_idx = tmp_layer_ptr->getLayerIdx(); //mhsiao: define a virtual hypoNum() inside Value and define the implementation in both GenericValue and MHGenericValue so that we do not need MHValue here...
     
     if (tmp_layer_idx >= max_layer_idx) {
        

@@ -41,10 +41,11 @@ namespace gtsam {
     // layer_diff MUST be >= 0
     if (layer_diff == 0) { //arrive the desired layer
       return 1;
-    } else {
-      const int this_layer_idx = belong_layer_ptr_->layer_idx_;
+    
+    } else if (layer_diff > 0) {
+      const int this_layer_idx = belong_layer_ptr_->getLayerIdx();
       const int des_layer_idx = this_layer_idx + layer_diff;
-      HypoList& des_node_list = belong_layer_ptr_->belong_tree_ptr_->layer_arr_[des_layer_idx]->node_list_;
+      HypoList& des_node_list = belong_layer_ptr_->getBelongTreePtr()->layer_arr_[des_layer_idx]->getNodeList();
 
       size_t sum_child_num = 0;  
       for (HypoListCstIter it = des_node_list.begin(); it != des_node_list.end(); ++it) {
@@ -54,6 +55,10 @@ namespace gtsam {
         }
       }
       return sum_child_num;
+
+    } else { // < 0
+      std::cout << "ERROR: findDescendantNum() should NEVER have input layer_diff < 0 !!" << std::endl; 
+      return 0;
     }
   } // END findDescendantNum()
 

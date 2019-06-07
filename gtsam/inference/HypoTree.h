@@ -235,7 +235,8 @@ namespace gtsam {
       typedef typename HypoList::const_iterator HypoListCstIter;
 
       typedef std::vector<PruningRecord*> RecordArr;
-      
+   
+    private:   
       const int layer_idx_;
       
       HypoTree* belong_tree_ptr_;
@@ -250,6 +251,7 @@ namespace gtsam {
       //FactorList target_factor_list_; //resulting linearized factors... All must be MH (since we only need to search from Factor to Value/Vector...)
       KeyList key_list_; //each Key to one resulting MHValue/MHVector
     
+    public:
       HypoLayer() : layer_idx_(-1) {//should never be used
         std::cout << "HypoLayer() without input arg should never be used" << std::endl;
       }
@@ -309,16 +311,24 @@ namespace gtsam {
         source_factor_ = factor;
       }
 
-      const int& getLayerIdx() {
+      const int& getLayerIdx() const {
         return layer_idx_;
       }
 
-      size_t getNodeSize() {
+      HypoTree* getBelongTreePtr() const {
+        return belong_tree_ptr_;
+      }
+
+      size_t getNodeSize() const {
         return node_list_.size();
       }
 
       HypoList& getNodeList() {
         return node_list_;
+      }
+      
+      RecordArr& getRecordArr() {
+        return record_arr_;
       }
 
       bool isModeIdExist(const int& mode_id) {
@@ -403,7 +413,7 @@ namespace gtsam {
       ~HypoTree() {}
       
       HypoNode* root() {
-        return layer_arr_.front()->node_list_.front();
+        return layer_arr_.front()->getNodeList().front();
       }
 
       void addLayer(const int& mode_size, const size_t& dim, const bool& is_loop, const bool& is_detachable) {
@@ -457,7 +467,7 @@ namespace gtsam {
 
       int calculateOriginalHypoNum() {
         int total_mode_num = 1;
-        HypoNode* node = *(layer_arr_.back()->node_list_.begin());
+        HypoNode* node = *(layer_arr_.back()->getNodeList().begin());
         for (size_t a = 0; a < (200*node->ancestor_level_ + (node->ancestor_arr_.size())); ++a) {
           const int mode_num = node->findAncestor(a)->child_list_.size();
           total_mode_num *= mode_num;

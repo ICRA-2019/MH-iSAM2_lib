@@ -472,13 +472,17 @@ public:
     virtual Value* retract_(const Vector& delta) const {
       //TODO should use this retract_()
       // Call retract on the derived class using the retract trait function
+
       std::list<T> retractResult_list;
       size_t this_dim = dim();
       int count = 0;
+
+if (generic_list_.size() * this_dim != delta.size()) {
+std::cout << "SIZE_DIM: " << generic_list_.size() << " " << this_dim << " " << delta.size() << std::endl;
+std::cout << "HYPO: " << resulting_layer_->getNodeList().size() << std::endl;
+}
       for (GenericListCstIter it = generic_list_.begin(); it != generic_list_.end(); ++it) {
-        
         retractResult_list.push_back(traits<T>::Retract((boost::dynamic_pointer_cast<GenericValue<T> >(*it))->value(), delta.segment(count, this_dim)));
-        
         count += this_dim;
       }
 
@@ -624,7 +628,7 @@ public:
     //[MH-A]: A lot of work!!!! Try merging. If not complete then expand MHGV
     void mergeHypoAndSetAgree(std::vector<Vector>& vec_arr, const int& max_layer_idx, const Key& key, const double& splitThreshold) { 
 
-      const int this_layer_idx = resulting_layer_->layer_idx_;
+      const int this_layer_idx = resulting_layer_->getLayerIdx();
       const int layer_diff = max_layer_idx - this_layer_idx;
 
       //[MH-A]: combine vec_arr based on HypoTree structure
@@ -649,8 +653,15 @@ public:
 
         //[MH-A]: duplicate generic_list_ items if the combined vec_arr still CANNOT reach the same HypoLayer
         setAgreeToDiff(key, remained_layer);
-         
+
       } // END if NOT the same HypoLayer...
+
+//*
+if (generic_list_.size() != vec_arr.size()) {
+std::cout << "GL_SIZE: " << generic_list_.size() << " " << vec_arr.size() << std::endl;
+std::cout << "LL: " << this_layer_idx << " " << max_layer_idx << std::endl;
+}
+// */      
     } // END mergeHypoAndSetAgree()
   
     //[MH-C]:
@@ -676,7 +687,7 @@ public:
       if (generic_list_.size() == hypo_list.size()) {
         return false; //already up-to-date, no need any changes
       } else {
-        RecordArr& record_arr = resulting_layer_->record_arr_;
+        RecordArr& record_arr = resulting_layer_->getRecordArr();
         
         for (size_t r = 0; r < record_arr.size(); ++r) {
         
@@ -737,7 +748,7 @@ public:
     } // END setAgreeToDiff()
     
     void setAgreeWith(const Key& key, HypoLayer* target_layer) {
-      setAgreeToDiff(key, target_layer->layer_idx_ - resulting_layer_->layer_idx_);
+      setAgreeToDiff( key, (target_layer->getLayerIdx() - resulting_layer_->getLayerIdx()) );
     }
      
     /*

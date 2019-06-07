@@ -19,14 +19,10 @@ using namespace boost::algorithm;
 using symbol_shorthand::X;
 
 // Testing params
-const size_t max_loop_count = 200; //200 //2000 //8000
+const size_t max_loop_count = 8000; //200 //2000 //8000
 
 const bool active_all_loop_detach = false;
 //const bool active_all_loop_detach = true;
-
-//const string input_file_name = "../data/mh_T1_city10000_04.txt"; //Type #1 only
-//const string input_file_name = "../data/mh_T3b_city10000_10.txt"; //Type #3 only
-const string input_file_name = "../data/mh_T1_T3_city10000_04.txt"; //Type #1 + Type #3
 
 noiseModel::Diagonal::shared_ptr prior_noise_model = noiseModel::Diagonal::Sigmas((Vector(3) << 0.0001, 0.0001, 0.0001).finished());
 
@@ -36,7 +32,9 @@ noiseModel::Diagonal::shared_ptr pose_noise_model = noiseModel::Diagonal::Sigmas
 
 int main(int argc, char* argv[]) {
   
-  ifstream in(input_file_name);
+  //ifstream in("../data/mh_T1_city10000_04.txt"); //Type #1 only
+  //ifstream in("../data/mh_T3b_city10000_10.txt"); //Type #3 only
+  ifstream in("../data/mh_T1_T3_city10000_04.txt"); //Type #1 + Type #3
 
   size_t pose_count = 0;
   size_t loop_count = 0;
@@ -48,6 +46,7 @@ int main(int argc, char* argv[]) {
 
   mh_parameters.isPrintPruningDetails = true;
     
+  //parameters.optimizationParams = gtsam::ISAM2DoglegParams(0.1);  //_initialDelta = 1.0 //Dogleg NOT implemented yet!!!!
   parameters.optimizationParams = gtsam::ISAM2GaussNewtonParams(0.0); //_wildfireThreshold = 0.001
   
   parameters.relinearizeThreshold = 0.01;
@@ -79,6 +78,7 @@ int main(int argc, char* argv[]) {
   mh_init_values.clear();
   mh_results = mh_isam2->mhCalculateBestEstimate();
   
+  //*
   size_t key_s = 0;
   size_t key_t = 0;
   
@@ -87,6 +87,7 @@ int main(int argc, char* argv[]) {
   string str;
   while (getline(in, str) && loop_count < max_loop_count) {
     
+    //cout << str << endl; 
     vector<string> parts;
     split(parts, str, is_any_of(" "));
     
@@ -152,10 +153,17 @@ int main(int argc, char* argv[]) {
     mh_init_values.clear();
     mh_results = mh_isam2->mhCalculateBestEstimate();
   
+    //* 
     if (loop_count%50 == 0 && key_s != key_t - 1) {
        std::cout << "loop_count: " << loop_count << std::endl;
+       
+       //MHISAM2::HypoList& curr_hypo_list = mh_isam2->getLastHypoLayer()->getNodeList();
+       //std::cout << "Last layer hypos:  " << curr_hypo_list.size() << std::endl;
+       
        std::cout << "acc_time:  " << time_list.back() << std::endl;
     }
+    // */
+
     
     if (key_s == key_t - 1) {
       clock_t cur_time = clock();
@@ -184,11 +192,11 @@ int main(int argc, char* argv[]) {
   clock_t end_time = clock();
   clock_t total_time = end_time - start_time;
   cout << "total_time: " << total_time << endl;
-  cout << "# layers: " << mh_isam2->getLastHypoLayer()->layer_idx_ << endl;
+  cout << "# layers: " << mh_isam2->getLastHypoLayer()->getLayerIdx() << endl;
   
   mh_isam2->printAllFinalHypo();
-
-  /*   
+  //* 
+  
   ofstream outfile;
   string file_name = "MH_ISAM2_TEST_city10000";
   outfile.open(file_name + ".txt");
@@ -205,6 +213,7 @@ int main(int argc, char* argv[]) {
   cout << "output " << file_name << ".txt file." << endl;
   // */
   
+  //*
   // Output each hypo
   ofstream outfile_hypo;
   string hypo_file_name = "MH_ISAM2_TEST_city10000_hypos";
@@ -224,14 +233,15 @@ int main(int argc, char* argv[]) {
   }
   outfile_hypo.close();
   cout << "output " << hypo_file_name << ".txt file." << endl;
+  // */
   
-  /*
+  //*
   // Output each mode
   ofstream outfile_mode;
   string mode_file_name = "MH_ISAM2_TEST_city10000_modes";
   outfile_mode.open(mode_file_name + ".txt");
   outfile_mode << "total_time:  " << total_time << endl;
-  outfile_mode << "# layers: " << mh_isam2->getLastHypoLayer()->layer_idx_ << endl;
+  outfile_mode << "# layers: " << mh_isam2->getLastHypoLayer()->getLayerIdx() << endl;
   outfile_mode << "overall original hypos:  " << mh_isam2->calculateExpGrowHypoNum() << endl;
   outfile_mode << "overall final hypos:  " << max_hypo_list.size() << endl;
   outfile_mode << "loop_count:  " << loop_count << endl;
@@ -246,17 +256,17 @@ int main(int argc, char* argv[]) {
   }
   outfile_mode.close();
   cout << "output " << mode_file_name << ".txt file." << endl;
-  // */
 
-  // Output accumulated time ratio
+  //*
   ofstream outfile_time;
   string time_file_name = "MH_ISAM2_TEST_city10000_time";
   outfile_time.open(time_file_name + ".txt");
   for (auto acc_time : time_list) {
-    outfile_time << acc_time << endl;
+    outfile_time << acc_time << endl; 
   }
   outfile_time.close();
   cout << "output " << time_file_name << ".txt file." << endl;
+  // */
 
   return 0;
 }

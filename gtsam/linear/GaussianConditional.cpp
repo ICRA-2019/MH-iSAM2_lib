@@ -172,10 +172,10 @@ Vector toLongVec(std::vector<Vector>& in_arr, const size_t& dim) {
     std::vector<Vector> solution_arr;
     int max_layer_idx = -1;
 
+    const int this_layer_idx = resulting_layer_->getLayerIdx();
+
     if (nrParents() != 0) { //NOT the root clique
       
-      const int this_layer_idx = resulting_layer_->layer_idx_;
-
       //[MH-A]: Find max-hypo among all xS (separators)
       std::vector<HypoLayer*> hypo_layer_arr(nrParents());
 
@@ -192,9 +192,9 @@ Vector toLongVec(std::vector<Vector>& in_arr, const size_t& dim) {
         
         dim_arr[hla_idx] = val_ptr->dim();
 
-        int tmp_layer_idx = tmp_layer_ptr->layer_idx_;
-        
-        hypo_layer_arr[hla_idx] = tmp_layer_ptr;
+        const int tmp_layer_idx = tmp_layer_ptr->getLayerIdx();
+
+        hypo_layer_arr[hla_idx] = tmp_layer_ptr; //later used in mhUpdateVectorArr()
 
         if (tmp_layer_idx >= max_layer_idx) {
           max_layer_idx = tmp_layer_idx;
@@ -203,14 +203,27 @@ Vector toLongVec(std::vector<Vector>& in_arr, const size_t& dim) {
         
         ++hla_idx;
       }
-      
-      HypoLayer* max_layer_ptr;
+
+      HypoLayer* max_layer_ptr = hypo_layer_arr[max_idx];
+
+      // WARNING: Consider HypoLayers of the frontals as well
+      for(auto kit = beginFrontals(); kit != endFrontals(); ++kit) {
+        Value* val_ptr = &(theta.at(*kit));
+        HypoLayer* tmp_layer_ptr = val_ptr->getHypoLayer();
+
+        const int tmp_layer_idx = tmp_layer_ptr->getLayerIdx();
+        if (tmp_layer_idx >= max_layer_idx) {
+          max_layer_idx = tmp_layer_idx;
+          max_layer_ptr = tmp_layer_ptr;
+        }
+      }
+
       if (max_layer_idx < this_layer_idx) {
+std::cout << "ERROR: max_layer_idx from both parents and frontals (" << max_layer_idx << ") < this_layer_idx (" << this_layer_idx << ") should NEVER happen !!" << std::endl;      
         // Force to expand
         max_layer_idx = this_layer_idx;
         max_layer_ptr = resulting_layer_;
-      } else {
-        max_layer_ptr = hypo_layer_arr[max_idx];
+std::cout << "FINAL_MAX: " << max_layer_idx << std::endl;      
       }
       
       size_t sum_dim = std::accumulate(dim_arr.begin(), dim_arr.end(), 0);
@@ -220,7 +233,7 @@ Vector toLongVec(std::vector<Vector>& in_arr, const size_t& dim) {
       const HypoList& max_hypo_list = max_layer_ptr->getNodeList();
       std::vector<Vector> xS_arr(max_hypo_list.size(), Vector(sum_dim)); //(# hypo) * (dim)
 
-      //max_layer_idx = hypo_layer_arr[max_idx]->layer_idx_;
+      //max_layer_idx = hypo_layer_arr[max_idx]->getLayerIdx();
       size_t pos = 0;
       int hla_count = 0;
       for(auto kit = beginParents(); kit != endParents(); ++kit) {
@@ -270,6 +283,8 @@ Vector toLongVec(std::vector<Vector>& in_arr, const size_t& dim) {
     
     } else { //root Clique
       //[MH-A]: Get solution based on itself
+      max_layer_idx = this_layer_idx;
+    
       solution_arr.resize(jacobian_list_.size());
       size_t sa_idx = 0;
       for (JacobListCstIter jit = jacobian_list_.begin(); jit != jacobian_list_.end(); ++jit) { 
@@ -280,7 +295,6 @@ Vector toLongVec(std::vector<Vector>& in_arr, const size_t& dim) {
           throw IndeterminantLinearSystemException(keys().front());
         }
       }
-
     } // END if-else root
 
     //[MH-A]: Re-group the output VectorArr into VectorValues while eliminating deplicated items (might have to check if the baseline # hypo of each Vector is greater than the # hypo of the corresponding MHGV)
